@@ -25,6 +25,120 @@ body {
   overflow: hidden;
   perspective: 1000px;
 }
+    /* ---------------------------
+   Gift popup styles (merge)
+   Paste at the end of your stylesheet
+   --------------------------- */
+
+/* If you already have :root, add these vars into it instead of duplicating */
+:root {
+  --overlay-bg: rgba(0,0,0,0.35);
+  --card-bg: #fff;
+  --accent: #e74c3c;
+  --whatsapp: #25D366;
+}
+
+/* Warning trigger (circular) */
+.warning-icon {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: inline-grid;
+  place-items: center;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  background: #fff;
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+.warning-icon .fa-exclamation { font-size: 20px; }
+.warning-icon:focus { outline: 3px solid rgba(231,76,60,0.12); outline-offset: 4px; }
+
+/* Overlay & blur */
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: var(--overlay-bg);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 20px;
+  z-index: 1100; /* must be > .warning-icon */
+}
+.popup-overlay.is-visible { display: flex; }
+
+/* Card */
+.popup-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 26px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 18px 50px rgba(0,0,0,0.20);
+  transform: translateY(10px) scale(.985);
+  opacity: 0;
+  transition: transform .22s ease, opacity .22s ease;
+}
+.popup-overlay.is-visible .popup-card {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+/* Close button (RTL: left side) */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  border: none;
+  background: transparent;
+  color: #666;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+}
+.close-btn:hover { color: #111; }
+
+.popup-card p { margin: 0 0 10px; font-size: 16px; color: #111; line-height: 1.6; }
+.popup-card small { display: block; margin-top: 10px; font-size: 13px; color: #666; }
+
+/* WhatsApp CTA */
+.whatsapp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  text-decoration: none;
+  background: var(--whatsapp);
+  color: #fff;
+  font-weight: 700;
+  margin-top: 8px;
+}
+.whatsapp-icon { width: 18px; height: 18px; display: inline-block; }
+
+/* accessibility helper */
+.sr-only {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .popup-card { transition: none; transform: none; opacity: 1; }
+}
 .sorry-header {
   position: absolute;
   top: 20px;           /* distance from top of overlay */
