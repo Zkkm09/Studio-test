@@ -2127,6 +2127,89 @@ body:not(.container) * {
 
 </head>
 <body>
+  
+  <!-- Trigger -->
+  <button id="warningTrigger" class="warning-icon" aria-haspopup="dialog" aria-controls="giftPopup" aria-expanded="false" title="معلومة هامة">
+    <i class="fas fa-exclamation" aria-hidden="true"></i>
+    <span class="sr-only">فتح بطاقة الهدية</span>
+  </button>
+
+  <!-- Overlay + Popup -->
+  <div id="popupOverlay" class="popup-overlay" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="popup-card" id="giftPopup" tabindex="-1">
+      <button class="close-btn" id="closePopup" aria-label="إغلاق"><i class="fas fa-times" aria-hidden="true"></i></button>
+
+      <p>تم عمل هذا الموقع كـ هدية من اجلك ❤️</p>
+
+      <p>
+        للتواصل مع الشركة القائمة على مواقع الهدايا<br>
+        <a id="whatsappBtn" class="whatsapp-btn"
+           href="https://wa.me/9647881552046"
+           target="_blank" rel="noopener noreferrer">
+          <!-- inline SVG whatsapp icon for reliability -->
+          <svg class="whatsapp-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path fill="white" d="M20.5 3.5A11 11 0 0 0 3.2 17.3L2 22l4.9-1.3A11 11 0 1 0 20.5 3.5ZM12 20a8 8 0 1 1 6.4-12.9 1 1 0 0 0-.9-.4 1 1 0 0 0-.7.3l-1 1a1 1 0 0 1-1.1.2 5 5 0 0 0-5.1 0 1 1 0 0 1-1.4-.3l-.7-1A1 1 0 0 0 7 5.5a1 1 0 0 0-.9.4A8 8 0 0 1 12 20Z"/>
+          </svg>
+          اضغط هنا
+        </a>
+      </p>
+
+      <small>ملاحظة نحن غير مسؤولين عن الاستخدام الخاطئ لهذه المواقع</small>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const trigger = document.getElementById('warningTrigger');
+      const overlay = document.getElementById('popupOverlay');
+      const closeBtn = document.getElementById('closePopup');
+      const giftPopup = document.getElementById('giftPopup');
+
+      function show() {
+        overlay.classList.add('is-visible');
+        overlay.setAttribute('aria-hidden', 'false');
+        trigger.setAttribute('aria-expanded', 'true');
+        // lock page scroll
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden';
+        // focus popup for keyboard users
+        giftPopup.focus();
+        console.log('Gift popup shown');
+      }
+      function hide() {
+        overlay.classList.remove('is-visible');
+        overlay.setAttribute('aria-hidden', 'true');
+        trigger.setAttribute('aria-expanded', 'false');
+        document.documentElement.style.overflow = '';
+        document.body.style.overflow = '';
+        trigger.focus();
+        console.log('Gift popup hidden');
+      }
+
+      trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        show();
+      });
+
+      closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        hide();
+      });
+
+      // click outside => close
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) hide();
+      });
+
+      // Esc to close
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && overlay.classList.contains('is-visible')) hide();
+      });
+
+      // expose for debug if needed
+      window.giftPopup = { show, hide };
+    })();
+  </script>
 <!-- partial:index.partial.html -->
 <div class="container">
   <div class="sorry-header">I am so sorry __USERNAME__</div>
